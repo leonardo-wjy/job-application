@@ -1,0 +1,15 @@
+.costum-input {
+  margin-bottom: 10px;
+}
+
+.costum-input-input {
+  border-radius: 5px;
+  padding: 5.5px 8px;
+  border: 1px solid black;
+  box-shadow: none;
+}
+
+.costum-input-input:focus {
+  box-shadow: none;
+  border: 1px solid #9da5b1;
+}

@@ -1,0 +1,100 @@
+// Here you can add other styles
+
+// BODY
+.wrapper .body .container-lg {
+  max-width: 100%;
+}
+
+// SIDEBAR
+.sidebar-nav .nav-link.active {
+  background: #102d4e;
+}
+
+// CHECKBOX
+.form-check-input:checked {
+  background-color: rgb(16, 45, 78);
+}
+
+// SWAL
+.swal-button {
+  box-shadow: none;
+  outline: none;
+}
+
+.swal-modal .swal-footer {
+  text-align: center;
+}
+
+.swal-modal
+  .swal-footer
+  .swal-button-container
+  .swal-button.swal-button--save:hover,
+.swal-modal
+  .swal-footer
+  .swal-button-container
+  .swal-button.swal-button--save:active {
+  background-color: none !important;
+}
+
+.swal-modal
+  .swal-footer
+  .swal-button-container
+  .swal-button.swal-button--discard:hover,
+.swal-modal
+  .swal-footer
+  .swal-button-container
+  .swal-button.swal-button--discard:active {
+  background-color: none !important;
+}
+
+.swal-button--save {
+  background-color: #102d4e;
+  color: #fff;
+  border: 1px #102d4e solid;
+  box-shadow: none;
+}
+
+.swal-modal
+  .swal-footer
+  .swal-button-container
+  .swal-button.swal-button--save:hover,
+.swal-modal
+  .swal-footer
+  .swal-button-container
+  .swal-button.swal-button--save:focus,
+.swal-modal
+  .swal-footer
+  .swal-button-container
+  .swal-button.swal-button--save:active {
+  background-color: #ffffff;
+  color: #102d4e;
+  box-shadow: none;
+}
+
+.swal-button--discard {
+  background-color: #fff;
+  color: #c13d3d;
+  border: 1px solid #c13d3d;
+  box-shadow: none;
+}
+
+.swal-modal
+  .swal-footer
+  .swal-button-container
+  .swal-button.swal-button--discard:hover,
+.swal-modal
+  .swal-footer
+  .swal-button-container
+  .swal-button.swal-button--discard:focus,
+.swal-modal
+  .swal-footer
+  .swal-button-container
+  .swal-button.swal-button--discard:active {
+  background-color: #c13d3d;
+  color: #ffffff;
+  box-shadow: none;
+}
+
+.modal-dialog-scrollable .modal-body.modal-export {
+  height: 300px;
+}
