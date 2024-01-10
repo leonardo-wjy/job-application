@@ -173,6 +173,8 @@
  *     responses:
  *       200:
  *         description: Success
+ *
+ * /form/id/{id}:
  *   get:
  *     tags:
  *      - Form
@@ -185,6 +187,50 @@
  *              required: true
  *     security:
  *       - access_token: []
+ *     responses:
+ *       200:
+ *         description: Success
+ * 
+ * /form/all:
+ *   get:
+ *     tags:
+ *      - Form
+ *     summary: Get All Form
+ *     parameters:
+ *        - in: query
+ *          name: search
+ *          schema:
+ *              type: string
+ *        - in: query
+ *          name: sort
+ *          schema:
+ *              type: string
+ *              required: true
+ *              example: createdAt
+ *              description: createdAt
+ *        - in: query
+ *          name: sortType
+ *          schema:
+ *              type: string
+ *              required: true
+ *              example: DESC
+ *              description: DESC
+ *        - in: query
+ *          name: pageSize
+ *          schema:
+ *              type: integer
+ *              required: true
+ *              example: 10
+ *              description: 10
+ *        - in: query
+ *          name: currentPage
+ *          schema:
+ *              type: integer
+ *              required: true
+ *              example: 1
+ *              description: 1
+ *     security:
+ *          - access_token: []
  *     responses:
  *       200:
  *         description: Success

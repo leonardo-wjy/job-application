@@ -273,6 +273,7 @@ const CostumInput = ({
               onChange={handleSelect}
               isClearable={isClearable}
               placeholder={placeholder}
+              isDisabled={disabled}
               //value={name}
             />
           )}

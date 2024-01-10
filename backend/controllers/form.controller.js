@@ -3,10 +3,76 @@ const { form, user } = require("../models");
 const gHelper = require("../helpers/global.helper");
 const Joi = require("joi");
 require("dotenv").config();
+const { Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
 var crypto = require('crypto');
 const moment = require("moment");
 moment.locale("id");
+
+//get all form user
+const getAll = async (req, res) => {
+  const {
+    query: { search, searchType, currentPage, pageSize, sort, sortType },
+  } = req;
+
+  const arrSort = {
+    createdAt: "createdAt"
+  };
+  const arrSortType = { asc: "ASC", desc: "DESC" };
+
+  const querySort = arrSort[sort] || arrSort.createdAt;
+  const querySortType = arrSortType[sortType] || arrSortType.desc;
+  const limit = Number(pageSize) || 10;
+  const current_Page = currentPage || 1;
+  const offset = (current_Page - 1) * limit;
+
+  try {
+    let condition = {};
+    if (search) {
+      condition = {
+          [Op.or]: [
+              {
+                  nama: { [Op.substring]: search },
+              },
+              {
+                  posisi: { [Op.substring]: search },
+              },
+          ]
+      } 
+    Object.assign(condition);
+  }
+
+    const data = await form.findAll({
+      where: condition,
+      order: [[querySort, querySortType]],
+      offset: offset,
+      limit: limit,
+    });
+
+    const totalData = await form.count({
+      where: condition,
+      col: "id",
+    });
+
+    const meta = {
+      currentPage: Number(current_Page),
+      pageCount: gHelper.totalPage(totalData, limit),
+      pageSize: limit,
+    };
+
+    res.status(200).send({
+      status: true,
+      message: "Success Getting Form",
+      data: data,
+      meta: meta,
+    });
+  } catch (error) {
+    return res.status(404).send({
+      status: false,
+      message: error.message,
+    });
+  }
+};
 
 //Save Form User
 const Save = async (req, res) => {
@@ -150,6 +216,7 @@ const getById = async (req, res) => {
 
 module.exports = {
     getById,
-    Save
+    Save,
+    getAll
 };
   

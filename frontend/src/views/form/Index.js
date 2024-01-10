@@ -28,6 +28,7 @@ function Index() {
   const [golongan_darah, setGolonganDarah] = useState([]);
   const [status, setStatus] = useState([]);
   const [bersedia_penempatan, setBersediaPenempatan] = useState([]);
+  const [isNew, setIsNew] = useState(true);
 
   const agamaOption = [
     {value: 'Islam', label: 'Islam'},
@@ -115,7 +116,10 @@ function Index() {
         setValue("penghasilan_harapan", addCommas(removeNonNumeric(data.penghasilan_harapan)));
       },
       onError: (err) => {
-
+        if(err?.response?.status === 400)
+        {
+          setIsNew(false);
+        }
       },
     }
   );
@@ -153,6 +157,7 @@ function Index() {
     useMutation(formAPI.create, {
       onSuccess: (res) => {
         Swal(res.message, "", "success");
+        setIsNew(true);
       },
       onError: (err) => {
         ResponseError(err, dispatch, history);
@@ -212,11 +217,13 @@ function Index() {
           style={{ background: colors.gray2, padding: "10px" }}
           className="d-flex justify-content-end align-items-center"
         >
-          <></>
+        {isNew ? 
+          <></> :
           <ButtonAction
             type="save"
             onClick={handleSubmit(onSubmit)}
           />
+        }
         </div>
 
         <CCardBody>
@@ -231,6 +238,7 @@ function Index() {
                     type="text"
                     errors={errors}
                     isReqMsg="Required"
+                    disabled={isNew}
                   />
                 </CCol>
                 <CCol md={6}>
@@ -241,6 +249,7 @@ function Index() {
                     type="text"
                     errors={errors}
                     isReqMsg="Required"
+                    disabled={isNew}
                   />
                 </CCol>
               </CRow>
@@ -258,6 +267,7 @@ function Index() {
                     maxLength={16}
                     errors={errors}
                     isReqMsg="Required"
+                    disabled={isNew}
                   />
                 </CCol>
                 <CCol md={6}>
@@ -268,6 +278,7 @@ function Index() {
                     type="text"
                     errors={errors}
                     isReqMsg="Required"
+                    disabled={isNew}
                   />
                 </CCol>
               </CRow>
@@ -287,6 +298,7 @@ function Index() {
                       dataSelect={agamaOption}
                       isReqMsg="Required"
                       errors={errors}
+                      disabled={isNew}
                     />
                 </CCol>
                 <CCol md={6}>
@@ -304,6 +316,7 @@ function Index() {
                       dataSelect={golonganDarahOption}
                       isReqMsg="Required"
                       errors={errors}
+                      disabled={isNew}
                     />
                 </CCol>
               </CRow>
@@ -323,6 +336,7 @@ function Index() {
                       dataSelect={statusOption}
                       isReqMsg="Required"
                       errors={errors}
+                      disabled={isNew}
                     />
                 </CCol>
                 <CCol md={6}>
@@ -334,6 +348,7 @@ function Index() {
                     errors={errors}
                     isReqMsg="Required"
                     patternMsg="Email is not valid"
+                    disabled={isNew}
                   />
                 </CCol>
               </CRow>
@@ -346,6 +361,7 @@ function Index() {
                     type="textarea"
                     errors={errors}
                     isReqMsg="Required"
+                    disabled={isNew}
                   />
                 </CCol>
               </CRow>
@@ -358,6 +374,7 @@ function Index() {
                     type="textarea"
                     errors={errors}
                     isReqMsg="Required"
+                    disabled={isNew}
                   />
                 </CCol>
               </CRow>
@@ -371,6 +388,7 @@ function Index() {
                     phone={true}
                     errors={errors}
                     isReqMsg="Required"
+                    disabled={isNew}
                   />
                 </CCol>
                 <CCol md={6}>
@@ -381,6 +399,7 @@ function Index() {
                     type="text"
                     errors={errors}
                     isReqMsg="Required"
+                    disabled={isNew}
                   />
                 </CCol>
               </CRow>
@@ -393,6 +412,7 @@ function Index() {
                     type="textarea"
                     errors={errors}
                     isReqMsg="Required"
+                    disabled={isNew}
                   />
                 </CCol>
               </CRow>
@@ -412,6 +432,7 @@ function Index() {
                       dataSelect={confirm}
                       isReqMsg="Required"
                       errors={errors}
+                      disabled={isNew}
                     />
                 </CCol>
                 <CCol md={6}>
@@ -423,6 +444,7 @@ function Index() {
                     handleChangeSalary={handleChangeSalary}
                     isReqMsg="Required"
                     errors={errors}
+                    disabled={isNew}
                   />
                 </CCol>
               </CRow>
