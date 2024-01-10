@@ -27,7 +27,10 @@ const getAll = async (req, res) => {
   const offset = (current_Page - 1) * limit;
 
   try {
-    let condition = {};
+    let condition = {
+      deletedAt: null, // Exclude soft-deleted records
+    };
+
     if (search) {
       condition = {
           [Op.or]: [
@@ -127,6 +130,7 @@ const Save = async (req, res) => {
         let find_form = await form.findAll({
           where: {
             user_id: req.params.id,
+            deletedAt: null
           },
           attributes: {
             exclude: ["createdAt", "updatedAt"],
@@ -135,9 +139,8 @@ const Save = async (req, res) => {
         });
   
         value.user_id = req.params.id;
-        value.createdAt = moment().format('YYYY-MM-DD HH:mm:ss');
-  
         if (find_form.length === 0) {
+          value.createdAt = moment().format('YYYY-MM-DD HH:mm:ss');
           value.updatedAt = moment().format('0000-00-00 00:00:00');
 
           // create
@@ -179,13 +182,55 @@ const Save = async (req, res) => {
   }
 };
 
+//Delete Form User
+const Delete = async (req, res) => {
+  try {
+    let find = await form.findOne({
+      where: {
+        user_id: req.params.id,
+        deletedAt: null
+      },
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
+      raw: true,
+    });
+
+    if(find)
+    {
+      let value = {};
+      value.deletedAt = moment().format('YYYY-MM-DD HH:mm:ss');
+
+      await form.update(value, 
+        { where: {user_id: req.params.id, deletedAt: null} }
+      );
+
+      res.status(200).send({
+        status: true,
+        message: 'Delete Successfully'
+      });
+    } else {
+      res.status(400).send({
+        status: true,
+        message: 'Data Not Found'
+      });
+    }
+  } catch (error) {
+    return res.status(500).send({
+      status: false,
+      message: "Error When Save",
+      errorDetail: error.message,
+    });
+  }
+};
+
 //get by id user
 const getById = async (req, res) => {
 
   try {
     let condition = {};
 
-    condition = Object.assign(condition, { user_id: req.params.id });
+    condition = Object.assign(condition, { user_id: req.params.id, deletedAt: null });
 
     const data = await form.findOne({
       where: condition,
@@ -217,6 +262,7 @@ const getById = async (req, res) => {
 module.exports = {
     getById,
     Save,
-    getAll
+    getAll,
+    Delete
 };
   

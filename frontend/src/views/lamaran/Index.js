@@ -41,10 +41,6 @@ function Index() {
   const [sort, setSort] = useState("desc");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [showModal, setShowModal] = useState(false);
-  const [showModalDetail, setShowModalDetail] = useState(false);
-  const [idEdit, setIdEdit] = useState("");
-  const [idDetail, setIdDetail] = useState("");
 
   const [data, setData] = useState([]);
   const [meta, setMeta] = useState({
@@ -53,13 +49,11 @@ function Index() {
     pageSize: 10,
   });
 
-  //
-  const onSort = (key) => {
-
-  };
-
   const actionList = [
-
+    {
+      name: "Lihat",
+      onClick: (id) => handleEdit(id),
+    },
   ];
 
   const onChangeLimit = (e) => {
@@ -105,8 +99,7 @@ function Index() {
       onSuccess: (res) => {
         const { data, meta } = res;
         const newData = data.map((item) => ({
-          id: item.id,
-          route: item.id,
+          id: item.user_id,
           nama: item.nama,
           tempat_tanggal_lahir: item.tempat_tanggal_lahir,
           posisi: item.posisi
@@ -125,6 +118,10 @@ function Index() {
       },
     }
   );
+
+  const handleEdit = (id) => {
+    history.push("/view/" + id);
+  };
 
   return (
     <div>
@@ -149,7 +146,6 @@ function Index() {
           // sort
           sort={sort}
           field={field}
-          onSort={onSort}
           // entries
           pageSize={pageSize}
           onChangeLimit={onChangeLimit}

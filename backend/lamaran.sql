@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 10, 2024 at 11:30 AM
+-- Generation Time: Jan 10, 2024 at 05:01 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -46,16 +46,18 @@ CREATE TABLE `form` (
   `bersedia_penempatan` enum('Ya','Tidak') NOT NULL,
   `penghasilan_harapan` int(20) NOT NULL,
   `createdAt` datetime NOT NULL DEFAULT current_timestamp(),
-  `updatedAt` datetime NOT NULL DEFAULT current_timestamp()
+  `updatedAt` datetime NOT NULL DEFAULT current_timestamp(),
+  `deletedAt` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `form`
 --
 
-INSERT INTO `form` (`id`, `user_id`, `posisi`, `nama`, `no_ktp`, `tempat_tanggal_lahir`, `agama`, `golongan_darah`, `status`, `alamat_ktp`, `alamat_tinggal`, `email`, `no_telp`, `orang_terdekat`, `skill`, `bersedia_penempatan`, `penghasilan_harapan`, `createdAt`, `updatedAt`) VALUES
-(1, 1, 'web developer', 'testing', '2123212321232123', 'Jakarta, 12 Mei 2000', 'Islam', 'A', 'Belum Menikah', 'Jalan A', 'Jalan A', 'test@gmail.com', '082187171778', 'Frislly, 081717218282', '- Mampu menggunakan bahasa pemrograman PHP', 'Ya', 9000000, '2024-01-10 17:25:03', '2024-01-10 17:25:03'),
-(2, 3, 'Web Developer', 'tes', '3333333333333333', 'Jakarta, 5 Desember 2002', 'Islam', 'AB', 'Menikah', 'tes', 'tes', 'test@gmail.com', '0828272727272', 'tes', 'tes', 'Ya', 8000000, '2024-01-10 17:14:04', '0000-00-00 00:00:00');
+INSERT INTO `form` (`id`, `user_id`, `posisi`, `nama`, `no_ktp`, `tempat_tanggal_lahir`, `agama`, `golongan_darah`, `status`, `alamat_ktp`, `alamat_tinggal`, `email`, `no_telp`, `orang_terdekat`, `skill`, `bersedia_penempatan`, `penghasilan_harapan`, `createdAt`, `updatedAt`, `deletedAt`) VALUES
+(1, 1, 'www (confirm)', 'aaa', '2222222222222222', 'a', 'Kristen Katolik', 'A', 'Menikah', 'a', 'a', 'a@gmail.com', '02188217671722', 'ahmad, 018281721772', '- a\n- b', 'Ya', 5000000, '2024-01-10 22:05:19', '2024-01-10 22:54:43', '2024-01-10 22:49:24'),
+(2, 1, 'www (confirm)', 'aaa', '2222222222222222', 'a', 'Kristen Katolik', 'A', 'Menikah', 'a', 'a', 'a@gmail.com', '02188217671722', 'ahmad, 018281721772', '- a\n- b', 'Ya', 5000000, '2024-01-10 22:51:16', '2024-01-10 22:54:43', NULL),
+(3, 3, 'Web Developer (Confirm)', 'Tes', '1212212121434455', 'Jakarta, 23 November 2000', 'Kristen Protestan', 'A', 'Menikah', 'a', 'a', 'test123@gmail.com', '08182172177', 'Tina, 0817271818288', '-a\n-b', 'Tidak', 6000000, '2024-01-10 22:56:06', '2024-01-10 22:56:30', NULL);
 
 -- --------------------------------------------------------
 
@@ -105,7 +107,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `form`
 --
 ALTER TABLE `form`
-  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `user`

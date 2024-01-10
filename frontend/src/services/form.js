@@ -12,6 +12,10 @@ const formAPI = {
     const { data } = await API.get(`form/id/${id}`);
     return data;
   },
+  delete: async ({id}) => {
+    const { data } = await API.delete(`form/delete/${id}`);
+    return data;
+  },
   create: async ({id, params}) => {
     const { data } = await API.post(`form/${id}`, params);
     return data;

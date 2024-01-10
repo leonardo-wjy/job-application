@@ -90,6 +90,10 @@ module.exports = (sequelize, DataTypes) => {
       updatedAt: {
         type: DataTypes.STRING(255),
         allowNull: false,
+      },
+      deletedAt: {
+        type: DataTypes.STRING(255),
+        allowNull: true,
       }
     },
     {

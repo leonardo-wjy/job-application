@@ -1,13 +1,10 @@
 const colors = {
   yellow: "#fec627",
   black: "#000000",
-
-  gray1: "#BDBDBD",
-  gray2: "#E8E8E8",
-
-  background: "#F0F6F8",
-  backgroundTitle: "#DAE9EC",
-
+  red: "#c13d3d",
+  blue: "#214F6B",
+  background: "#ffffff",
+  backgroundTitle: "#d8dbe0",
   borderTable: "#979797",
 };
 

@@ -53,47 +53,25 @@ function ButtonAction({
       backgroundColor: colors.yellow,
       img: null,
     };
-  } else if (type === "add") {
+  } else if (type === "delete") {
     icon = {
-      text: "Add",
+      text: "Delete",
       textColor: colors.white,
-      backgroundColor: colors.yellow,
+      backgroundColor: colors.red,
       img: null,
-    };
-  } else if (type === "action") {
-    icon = {
-      text: "",
-      textColor: colors.yellow,
-      backgroundColor: "none",
-      img: <HiDotsVertical color={colors.yellow} size="16px" />,
     };
   } else if (type === "back") {
     icon = {
-      text: "",
-      textColor: "none",
-      backgroundColor: "none",
-      img: <IoMdArrowBack color={colors.yellow} size="20px" />,
-    };
-  } else if (type === "sort") {
-    icon = {
-      text: "",
-      textColor: "none",
-      backgroundColor: "none",
-      img:
-        sortValue === "asc" ? (
-          <BsArrowUp size="14px" color={colors.yellow} className="me-2" />
-        ) : sortValue === "desc" ? (
-          <BsArrowDown size="14px" color={colors.yellow} className="me-2" />
-        ) : (
-          <BsArrowDownUp size="14px" color={colors.yellow} className="me-2" />
-        ),
+      text: "Back",
+      textColor: colors.white,
+      backgroundColor: colors.blue,
+      img: null,
     };
   } else {
     icon = {
       text: "",
       textColor: "none",
       backgroundColor: "none",
-      img: <MdCancel color={colors.black} size="20px" />,
     };
   }
 
@@ -112,6 +90,7 @@ function ButtonAction({
         display: "flex",
         alignItems: "center",
         padding: "0.3rem 0.5rem",
+        marginLeft: 10
       }}
       onClick={onClick}
       disabled={isLoading || isDisabled}
