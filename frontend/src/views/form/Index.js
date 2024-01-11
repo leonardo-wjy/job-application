@@ -9,7 +9,7 @@ import {
 import React, { useState } from "react";
 import colors from "src/utils/colors";
 import ButtonAction from "src/components/button/ButtonAction";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
 import formAPI from "src/services/form";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -86,6 +86,21 @@ function Index() {
     },
   });
 
+  const { fields: pendidikanFields, append: appendPendidikan, remove: removePendidikan } = useFieldArray({
+    control,
+    name: "pendidikan",
+  });
+
+  const { fields: pelatihanFields, append: appendPelatihan, remove: removePelatihan } = useFieldArray({
+    control,
+    name: "pelatihan",
+  });
+
+  const { fields: pekerjaanFields, append: appendPekerjaan, remove: removePekerjaan } = useFieldArray({
+    control,
+    name: "pekerjaan",
+  });
+
   // GET
   const { isLoading: isLoading } = useQuery(
     ["get-by-id", id],
@@ -94,7 +109,6 @@ function Index() {
       enabled: id !== false,
       onSuccess: (res) => {
         const data = res.data;
-        console.log(data)
         setValue("posisi", data.posisi);
         setValue("nama", data.nama);
         setValue("no_ktp", data.no_ktp);
@@ -114,6 +128,21 @@ function Index() {
         setValue("bersedia_penempatan", { value: data.bersedia_penempatan, label: data.bersedia_penempatan });
         setBersediaPenempatan({ value: data.bersedia_penempatan, label: data.bersedia_penempatan });
         setValue("penghasilan_harapan", addCommas(removeNonNumeric(data.penghasilan_harapan)));
+        if (Array.isArray(res?.dataPendidikan)) {
+          res?.dataPendidikan.forEach((value, index) => {
+            appendPendidikan({ jenjang_pendidikan: value.jenjang_pendidikan, institusi: value.institusi, jurusan: value.jurusan, tahun_lulus: value.tahun_lulus, ipk: value.ipk });
+          });
+        }
+        if (Array.isArray(res?.dataPelatihan)) {
+          res?.dataPelatihan.forEach((value, index) => {
+            appendPelatihan({ nama: value.nama, sertifikat: value.sertifikat, tahun: value.tahun });
+          });
+        }
+        if (Array.isArray(res?.dataPekerjaan)) {
+          res?.dataPekerjaan.forEach((value, index) => {
+            appendPekerjaan({ perusahaan: value.perusahaan, posisi: value.posisi, tahun: value.tahun, pendapatan: value.pendapatan });
+          });
+        }
       },
       onError: (err) => {
         if(err?.response?.status === 400)
@@ -448,6 +477,180 @@ function Index() {
                   />
                 </CCol>
               </CRow>
+              {/* pendidikan */}
+              <div className="mt-5 d-flex justify-content-between align-items-center">
+                <h1>Pendidikan Terakhir</h1>
+                {isNew || 
+                <ButtonAction
+                  type="education"
+                  onClick={() => appendPendidikan({})}
+                />
+                }
+              </div>
+              {pendidikanFields.map((field, index) => (
+                <CRow className="mt-2" key={field.id}>
+                  <CCol md={2}>
+                    <CostumInput
+                      register={register}
+                      label="Jenjang Pendidikan"
+                      name={`pendidikan[${index}].jenjang_pendidikan`}
+                      type="text"
+                      disabled={isNew}
+                    />
+                  </CCol>
+                  <CCol md={2}>
+                    <CostumInput
+                      register={register}
+                      label="Institusi"
+                      name={`pendidikan[${index}].institusi`}
+                      type="text"
+                      disabled={isNew}
+                    />
+                  </CCol>
+                  <CCol md={2}>
+                    <CostumInput
+                      register={register}
+                      label="Jurusan"
+                      name={`pendidikan[${index}].jurusan`}
+                      type="text"
+                      disabled={isNew}
+                    />
+                  </CCol>
+                  <CCol md={2}>
+                    <CostumInput
+                      register={register}
+                      label="Tahun Lulus"
+                      name={`pendidikan[${index}].tahun_lulus`}
+                      type="text"
+                      disabled={isNew}
+                    />
+                  </CCol>
+                  <CCol md={2}>
+                    <CostumInput
+                      register={register}
+                      label="IPK"
+                      name={`pendidikan[${index}].ipk`}
+                      type="text"
+                      disabled={isNew}
+                    />
+                  </CCol>
+                  <CCol md={2}>
+                    {isNew || 
+                    <ButtonAction
+                      type="deleteChild"
+                      onClick={() => {removePendidikan(index)}}
+                    />
+                    }
+                  </CCol>
+                </CRow>
+              ))}
+              {/* pelatihan */}
+              <div className="mt-5 d-flex justify-content-between align-items-center">
+                <h1>Riwayat Pelatihan</h1>
+                {isNew || 
+                <ButtonAction
+                  type="certificate"
+                  onClick={() => appendPelatihan({})}
+                />
+                }
+              </div>
+              {pelatihanFields.map((field, index) => (
+                <CRow className="mt-2" key={field.id}>
+                  <CCol md={3}>
+                    <CostumInput
+                      register={register}
+                      label="Nama Kursus / Seminar"
+                      name={`pelatihan[${index}].nama`}
+                      type="text"
+                      disabled={isNew}
+                    />
+                  </CCol>
+                  <CCol md={3}>
+                    <CostumInput
+                      register={register}
+                      label="Sertifikat (Ada / Tidak)"
+                      name={`pelatihan[${index}].sertifikat`}
+                      type="text"
+                      disabled={isNew}
+                    />
+                  </CCol>
+                  <CCol md={3}>
+                    <CostumInput
+                      register={register}
+                      label="Tahun"
+                      name={`pelatihan[${index}].tahun`}
+                      type="text"
+                      disabled={isNew}
+                    />
+                  </CCol>
+                  <CCol md={3}>
+                    {isNew || 
+                    <ButtonAction
+                      type="deleteChild"
+                      onClick={() => {removePelatihan(index)}}
+                    />
+                    }
+                  </CCol>
+                </CRow>
+              ))}
+              {/* pekerjaan */}
+              <div className="mt-5 d-flex justify-content-between align-items-center">
+                <h1>Riwayat Pekerjaan</h1>
+                {isNew || 
+                <ButtonAction
+                  type="work"
+                  onClick={() => appendPekerjaan({})}
+                />
+                }
+              </div>
+              {pekerjaanFields.map((field, index) => (
+                <CRow className="mt-2" key={field.id}>
+                  <CCol md={3}>
+                    <CostumInput
+                      register={register}
+                      label="Nama Perusahaan"
+                      name={`pekerjaan[${index}].perusahaan`}
+                      type="text"
+                      disabled={isNew}
+                    />
+                  </CCol>
+                  <CCol md={3}>
+                    <CostumInput
+                      register={register}
+                      label="Posisi Terakhir"
+                      name={`pekerjaan[${index}].posisi`}
+                      type="text"
+                      disabled={isNew}
+                    />
+                  </CCol>
+                  <CCol md={2}>
+                    <CostumInput
+                      register={register}
+                      label="Pendapatan Terakhir"
+                      name={`pekerjaan[${index}].pendapatan`}
+                      type="text"
+                      disabled={isNew}
+                    />
+                  </CCol>
+                  <CCol md={2}>
+                    <CostumInput
+                      register={register}
+                      label="Tahun"
+                      name={`pekerjaan[${index}].tahun`}
+                      type="text"
+                      disabled={isNew}
+                    />
+                  </CCol>
+                  <CCol md={2}>
+                    {isNew || 
+                    <ButtonAction
+                      type="deleteChild"
+                      onClick={() => {removePekerjaan(index)}}
+                    />
+                    }
+                  </CCol>
+                </CRow>
+              ))}
             </CForm>
           </CRow>
         </CCardBody>

@@ -15,7 +15,7 @@ import {
   BsArrowDown,
   BsArrowUp,
 } from "react-icons/bs";
-import { AiFillEdit, AiFillEye, AiFillPrinter } from "react-icons/ai";
+import { AiFillEdit, AiFillEye, AiFillPrinter, AiFillPlusCircle } from "react-icons/ai";
 import { HiDotsVertical } from "react-icons/hi";
 
 import colors from "src/utils/colors";
@@ -53,7 +53,35 @@ function ButtonAction({
       backgroundColor: colors.yellow,
       img: null,
     };
+  } else if (type === "education") {
+    icon = {
+      text: "Pendidikan",
+      textColor: colors.white,
+      backgroundColor: colors.yellow,
+      img: <AiFillPlusCircle color={colors.white} size="16px" />
+    };
+  } else if (type === "certificate") {
+    icon = {
+      text: "Pelatihan",
+      textColor: colors.white,
+      backgroundColor: colors.yellow,
+      img: <AiFillPlusCircle color={colors.white} size="16px" />
+    };
+  } else if (type === "work") {
+    icon = {
+      text: "Pekerjaan",
+      textColor: colors.white,
+      backgroundColor: colors.yellow,
+      img: <AiFillPlusCircle color={colors.white} size="16px" />
+    };
   } else if (type === "delete") {
+    icon = {
+      text: "Delete",
+      textColor: colors.white,
+      backgroundColor: colors.red,
+      img: null,
+    };
+  } else if (type === "deleteChild") {
     icon = {
       text: "Delete",
       textColor: colors.white,
@@ -90,7 +118,8 @@ function ButtonAction({
         display: "flex",
         alignItems: "center",
         padding: "0.3rem 0.5rem",
-        marginLeft: 10
+        marginLeft: type === "education" || type === "deleteChild" ? null : 10,
+        marginTop: type === "deleteChild" ? 35 : null 
       }}
       onClick={onClick}
       disabled={isLoading || isDisabled}

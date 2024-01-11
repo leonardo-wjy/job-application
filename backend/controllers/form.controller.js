@@ -1,4 +1,4 @@
-const { form, user } = require("../models");
+const { form, user, pendidikan, pelatihan, pekerjaan } = require("../models");
 // const gHelper = require("../helpers/global.helper");
 const gHelper = require("../helpers/global.helper");
 const Joi = require("joi");
@@ -95,6 +95,9 @@ const Save = async (req, res) => {
     skill: Joi.string().required(),
     bersedia_penempatan: Joi.string().required(),
     penghasilan_harapan: Joi.string().max(20).required(),
+    pendidikan: Joi.array(),
+    pelatihan: Joi.array(),
+    pekerjaan: Joi.array()
   });
 
   const options = {
@@ -139,6 +142,75 @@ const Save = async (req, res) => {
         });
   
         value.user_id = req.params.id;
+
+
+        // pendidikan, pelatihan, pekerjaan
+        await Promise.all([
+          pendidikan.destroy({ where: { user_id: req.params.id } }),
+          pekerjaan.destroy({ where: { user_id: req.params.id } }),
+          pelatihan.destroy({ where: { user_id: req.params.id } }),
+        ]);
+
+        // create pendidikan
+        if (value?.pendidikan) {
+          const createPromisesPendidikan = value?.pendidikan.map(async (result) => {
+            try {
+              return await pendidikan.create({
+                ...result,
+                user_id: req.params.id,
+                createdAt: moment().format('YYYY-MM-DD HH:mm:ss'),
+                updatedAt: moment().format('0000-00-00 00:00:00')
+              });
+            } catch (error) {
+              console.error("Error creating pendidikan record:", error);
+              throw error; // Rethrow the error to stop Promise.all if an error occurs
+            }
+          });
+        
+          // Wait for all the create operations to complete
+          await Promise.all(createPromisesPendidikan);
+        }
+        
+        // Create pekerjaan
+        if (value?.pekerjaan) {
+          const createPromisesPekerjaan = value?.pekerjaan.map(async (result) => {
+            try {
+              return await pekerjaan.create({
+                ...result,
+                user_id: req.params.id,
+                createdAt: moment().format('YYYY-MM-DD HH:mm:ss'),
+                updatedAt: moment().format('0000-00-00 00:00:00')
+              });
+            } catch (error) {
+              console.error("Error creating pekerjaan record:", error);
+              throw error; // Rethrow the error to stop Promise.all if an error occurs
+            }
+          });
+        
+          // Wait for all the create operations to complete
+          await Promise.all(createPromisesPekerjaan);
+        }
+        
+        // Create pelatihan
+        if (value?.pelatihan) {
+          const createPromisesPelatihan = value?.pelatihan.map(async (result) => {
+            try {
+              return await pelatihan.create({
+                ...result,
+                user_id: req.params.id,
+                createdAt: moment().format('YYYY-MM-DD HH:mm:ss'),
+                updatedAt: moment().format('0000-00-00 00:00:00')
+              });
+            } catch (error) {
+              console.error("Error creating pelatihan record:", error);
+              throw error; // Rethrow the error to stop Promise.all if an error occurs
+            }
+          });
+        
+          // Wait for all the create operations to complete
+          await Promise.all(createPromisesPelatihan);
+        }
+
         if (find_form.length === 0) {
           value.createdAt = moment().format('YYYY-MM-DD HH:mm:ss');
           value.updatedAt = moment().format('0000-00-00 00:00:00');
@@ -238,10 +310,25 @@ const getById = async (req, res) => {
 
     if(data)
     {
+      const dataPendidikan = await pendidikan.findAll({
+        where: condition,
+      });
+
+      const dataPelatihan = await pelatihan.findAll({
+        where: condition,
+      });
+
+      const dataPekerjaan = await pekerjaan.findAll({
+        where: condition,
+      });
+
       res.status(200).send({
         status: true,
         message: "Success Getting form",
         data : data,
+        dataPendidikan: dataPendidikan,
+        dataPelatihan: dataPelatihan,
+        dataPekerjaan: dataPekerjaan
       });
     }
     else
